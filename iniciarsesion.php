@@ -33,6 +33,9 @@
             $acceso_valido = password_verify($contrasena, $contrasena_cifrada);
             if($acceso_valido) {
                 echo "Bienvenido $usuario";
+                session_start();
+                $_SESION["usuario"] = $usuario;
+                header("Location: principal.php");
             } else {
                 echo "Usuario o contraseña incorrectos";
             }
