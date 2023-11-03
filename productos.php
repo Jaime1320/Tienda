@@ -18,8 +18,8 @@
                     <input class="form-control" type="text" name="nombreProducto">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Precio: </label>
-                    <input class="form-control" type="float" name="Precio">
+                    <label class="form-label">precio: </label>
+                    <input class="form-control" type="float" name="precio">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Descripción: </label>
@@ -45,45 +45,43 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $temp_nombreProducto = depurar($_POST["nombreProducto"]);
-        $temp_Precio = depurar($_POST["Precio"]);
+        $temp_precio = depurar($_POST["precio"]);
         $temp_descripcion = depurar($_POST["descripcion"]);
         $temp_cantidad = depurar($_POST["cantidad"]);
-    }
 
-    #   Validación nombreProducto
-    if(strlen($temp_nombreProducto) == 0) {
-        $err_nombreProducto = "El nombre es obligatorio";
-    } else {
-        $patron = "/^[a-zA-Z0-9]{1,40}$/";
-        if(!preg_match($patron, $temp_nombreProducto)) {
-            $err_nombreProducto = "El nombre tiene que tener entre 1 y 40 caracteres";
+
+        #   Validación nombreProducto
+        if (strlen($temp_nombreProducto) == 0) {
+            $err_nombreProducto = "El nombre es obligatorio";
         } else {
-            $nombreProducto = $temp_nombreProducto;
-            echo $nombreProducto;
+            $patron = "/^[a-zA-Z0-9]{1,40}$/";
+            if (!preg_match($patron, $temp_nombreProducto)) {
+                $err_nombreProducto = "El nombre tiene que tener entre 1 y 40 caracteres";
+            } else {
+                $nombreProducto = $temp_nombreProducto;
+                echo $nombreProducto;
+            }
+        }
+
+        #   Validación precio
+        if (strlen($temp_precio) == 0) {
+            $err_precio = "El precio es obligatorio";
+        } else {
+            $patron = "/^[0-9]{1,10}$/";
+            if (!preg_match($patron, $temp_precio)) {
+                $err_precio = "El precio tiene que tener entre 1 y 10 caracteres";
+            } else {
+                $precio = $temp_precio;
+                echo $precio;
+            }
         }
     }
 
-    #   Validación Precio
-    if(strlen($temp_Precio) == 0) {
-        $err_Precio = "El precio es obligatorio";
-    } else {
-        $patron = "/^[0-9]{1,10}$/";
-        if(!preg_match($patron, $temp_Precio)) {
-            $err_Precio = "El precio tiene que tener entre 1 y 10 caracteres";
-        } else {
-            $Precio = $temp_Precio;
-            echo $Precio;
-        }
+    if (isset($nombreProducto) && isset($precio) && isset($descripcion) && isset($cantidad)) {
+        $sql = "INSERT INTO productos (nombreProducto, precio, descripcion, cantidad) VALUES ('$nombreProducto', '$precio', '$descripcion', '$cantidad')";
+        $conexion->query($sql);
     }
-
     ?>
-
-    <?php
-        if(isset($nombreProducto) && isset($Precio) && isset($descripcion) && isset($cantidad)) {
-            $sql = "INSERT INTO productos (nombreProducto, Precio, descripcion, cantidad) VALUES ('$nombreProducto', '$Precio', '$descripcion', '$cantidad')";
-            $conexion->query($sql);
-        }
-    ?>  
 </body>
 
 </html>
