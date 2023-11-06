@@ -24,7 +24,7 @@
         } else {
             $patron = "/^[a-zA-Z_]{4,12}$/";
             if (!preg_match($patron, $temp_usuario)) {
-                $err_usuario = "El nombre debe tener entre 4 y 8 caracteres
+                $err_usuario = "El nombre debe tener entre 4 y 12 caracteres
                     y contener solamente letras o barrabajas";
             } else {
                 $usuario = $temp_usuario;
@@ -51,7 +51,7 @@
             $fecha_actual = date("Y-m-d");
             list($anyo_actual, $mes_actual, $dia_actual) = explode('-', $fecha_actual);
             list($anyo, $mes, $dia) = explode('-', $temp_fecha_nacimiento);
-            if(($anyo_actual - $anyo > 12) || ($anyo_actual - $anyo < 120)) {
+            if(($anyo_actual - $anyo > 12) && ($anyo_actual - $anyo < 120)) {
                 $fecha_nacimiento = $temp_fecha_nacimiento;
             } else if(($anyo_actual - $anyo < 12) || ($anyo_actual - $anyo > 120)) {
                 $err_fecha_nacimiento = "Debes tener al menos 12 años ni puedes tener más de 120";
