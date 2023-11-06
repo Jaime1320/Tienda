@@ -6,13 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar sesion</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <?php require "BaseDatos/base_login.php" ?>
+    <?php require "BaseDatos/base_tienda.php" ?>
 </head>
 
 <body>
     <?php
     session_start();
-    $usuario = $_SESSION["usuario"];
+
+    if (isset($_SESSION["usuario"])) {
+        $usuario = $_SESSION["usuario"];
+    }else{
+        //header("Location: iniciarsesion.php");
+        $_SESSION["usuario"] = "invitado";
+        $usuario = $_SESSION["usuario"];
+    }
     ?>
     <div class="container">
         <h1>Pagina principal</h1>

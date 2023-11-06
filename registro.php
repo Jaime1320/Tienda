@@ -6,20 +6,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrarse</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <?php require "BaseDatos/base_login.php" ?>
+    <?php require "BaseDatos/base_tienda.php" ?>
 </head>
 
 <body>
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $usuario = $_POST["usuario"];
-        $contrasena = $_POST["contrasena"];
+        $temp_usuario = $_POST["usuario"];
+        $temp_contrasena = $_POST["contrasena"];
+        $temp_fecha_nacimiento = $_POST["fecha_nacimiento"];
 
-        $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
+        $contrasena_cifrada = password_hash($temp_contrasena, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
+        #    Validacion usuario
+        if (!strlen($temp_usuario) > 0) {
+            $err_usuario = "El nombre de usuario es obligatorio";
+        } else {
+            $patron = "/^[a-zA-Z_]{4,12}$/";
+            if (!preg_match($patron, $temp_usuario)) {
+                $err_usuario = "El nombre debe tener entre 4 y 8 caracteres
+                    y contener solamente letras o barrabajas";
+            } else {
+                $usuario = $temp_usuario;
+            }
+        }
 
-        $conexion->query($sql);
+        #   Validación contraseña
+        if (!strlen($temp_contrasena) > 0) {
+            $err_contrasena = "La contraseña es obligatoria";
+        } else {
+            $patron = "/^[a-zA-Z0-9]{4,255}$/";
+            if (!preg_match($patron, $temp_contrasena)) {
+                $err_contrasena = "La contraseña debe tener entre 4 y 255 caracteres
+                    y contener solamente letras o números";
+            } else {
+                $contrasena = $temp_contrasena;
+            }
+        }
+
+        #   Validación fecha de nacimiento
+        if(strlen($temp_fecha_nacimiento) == 0) {
+            $err_fecha_nacimiento = "La fecha de nacimiento es obligatoria";
+        } else {
+            $fecha_actual = date("Y-m-d");
+            list($anyo_actual, $mes_actual, $dia_actual) = explode('-', $fecha_actual);
+            list($anyo, $mes, $dia) = explode('-', $temp_fecha_nacimiento);
+            if(($anyo_actual - $anyo > 12) || ($anyo_actual - $anyo < 120)) {
+                $fecha_nacimiento = $temp_fecha_nacimiento;
+            } else if(($anyo_actual - $anyo < 12) || ($anyo_actual - $anyo > 120)) {
+                $err_fecha_nacimiento = "Debes tener al menos 12 años ni puedes tener más de 120";
+            } else {
+                if($mes_actual - $mes > 0) {
+                    $fecha_nacimiento = $temp_fecha_nacimiento;
+                } else if($mes_actual - $mes < 0) {
+                    $err_fecha_nacimiento = "Debes tener al menos 12 años ni puedes tener más de 120";
+                } else {
+                    if($dia_actual - $dia >= 0) {
+                        $fecha_nacimiento = $temp_fecha_nacimiento;
+                    }else{
+                        $err_fecha_nacimiento = "Debes tener al menos 12 años ni puedes tener más de 120";
+                    }
+                }
+            }
+        }
+
     }
     ?>
     <div class="container">
@@ -28,13 +78,32 @@
             <div class="mb-3">
                 <label class="form-label">Usuario</label>
                 <input class="form-control" type="text" name="usuario">
+                <?php if (isset ($err_usuario)) echo '<label class=text-danger>'.$err_usuario. '</label>' ?>
             </div>
             <div class="mb-3">
                 <label class="form-label">contraseña</label>
                 <input class="form-control" type="password" name="contrasena">
+                <?php if (isset ($err_contrasena)) echo '<label class=text-danger>'.$err_contrasena. '</label>' ?>
             </div>
+            <label>Fecha de nacimiento: </label>
+            <input type="date" name="fecha_nacimiento">
+            <?php if (isset ($err_fecha_nacimiento)) echo '<label class=text-danger>'.$err_fecha_nacimiento. '</label>' ?>
+            <br>
+            <br>
             <input class="btn btn-primary" type="submit" value="Registrarse">
         </form>
+        <?php
+         if(isset($usuario) && isset($contrasena_cifrada) && isset($fecha_nacimiento)) {
+             $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada', '$fecha_nacimiento')";
+             
+             $conexion->query($sql);
+             echo "<div class='alert alert-success' role='alert'>";
+             echo  $usuario . " registrado correctamente</centre>";
+             echo "</div>";
+             header("Location: iniciarsesion.php");
+            }
+
+            ?>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
