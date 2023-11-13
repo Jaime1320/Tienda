@@ -44,6 +44,8 @@
         <h1>Pagina principal</h1>
         <h2>Bienvenid@ <?php echo $usuario ?></h2>
 
+        <a href="cerrarsesion.php">Cerrar sesion</a>
+
     </div>
     <div class="container">
         <table class="table table-striped table-hover">
