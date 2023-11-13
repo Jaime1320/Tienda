@@ -1,6 +1,12 @@
 td, th {
     text-align: center;
+    border: 5px white;
 }
 td {
     vertical-align: middle;
+    border: 5px white;
+}
+tr th{
+    text-align: center;
+    border: 5px white solid;
 }
