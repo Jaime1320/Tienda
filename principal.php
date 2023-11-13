@@ -13,9 +13,22 @@
 </head>
 
 <body>
+<?php
+    session_start();
+    if (isset($_SESSION["usuario"])) {
+        $usuario = $_SESSION["usuario"];
+        $rol = $_SESSION["rol"];
+    } else {
+        //header("Location: iniciarsesion.php");
+        $_SESSION["usuario"] = "invitado";
+        $usuario = $_SESSION["usuario"];
+        $_SESSION["rol"] = "cliente";
+        $rol = $_SESSION["rol"];
+    }
+    ?>
     <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark" data-bs-theme="dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand" href="#">La Tiendecilla de Jaime</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -28,7 +41,6 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <?php
-                    session_start();
                     if ($_SESSION["rol"] == 'admin') {
                     ?>
                         <li class="nav-item">
@@ -38,48 +50,15 @@
                     }
                     ?>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Cerrar Sesión</a>
+                        <a class="nav-link active" aria-current="page" href="cerrarsesion.php">Cerrar Sesión</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-    <?php
-
-    if (isset($_SESSION["usuario"])) {
-        $usuario = $_SESSION["usuario"];
-        $rol = $_SESSION["rol"];
-    } else {
-        //header("Location: iniciarsesion.php");
-        $_SESSION["usuario"] = "invitado";
-        $usuario = $_SESSION["usuario"];
-        $_SESSION["rol"] = "cliente";
-        $rol = $_SESSION["rol"];
-    }
-
-    $sql = "SELECT * from productos";
-    $resultado = $conexion->query($sql);
-    $productos = [];
-
-    while ($fila = $resultado->fetch_assoc()) {
-        $nuevo_producto = new Producto(
-            $fila["idProducto"],
-            $fila["nombreProducto"],
-            $fila["precio"],
-            $fila["descripcion"],
-            $fila["cantidad"],
-            $fila["imagen"]
-        );
-        array_push($productos, $nuevo_producto);
-    }
-
-    ?>
     <div class="container">
         <h1>Pagina principal</h1>
         <h2>Bienvenid@ <?php echo $usuario ?></h2>
-
-        <a href="cerrarsesion.php">Cerrar sesion</a>
-
     </div>
     <div class="container">
         <table class="table table-striped table-hover">
@@ -98,7 +77,20 @@
                 <?php
                 $sql = "SELECT * FROM productos";
                 $resultado = $conexion->query($sql);
-
+                $productos = [];
+                while ($fila = $resultado->fetch_assoc()) {
+                    $producto_Nuevo = new Producto(
+                        $fila['idProducto'],
+                        $fila['nombreProducto'],
+                        $fila['precio'],
+                        $fila['descripcion'],
+                        $fila['cantidad'],
+                        $fila['imagen']
+                    );
+                    array_push($productos, $producto_Nuevo);
+                }
+                ?>
+                <?php
                 foreach ($productos as $producto) {
                     echo "<tr>";
                     echo "<td>" . $producto->idProducto . "</td>";
