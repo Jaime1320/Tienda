@@ -41,7 +41,7 @@
                     if ($_SESSION["rol"] == 'admin') {
                     ?>
                         <li class="nav-item">
-                            <a  class="losa" class="nav-link active" aria-current="page" href="./productos.php">Productos</a>
+                            <a class="losa" class="nav-link active" aria-current="page" href="./productos.php">Productos</a>
                         </li>
                     <?php
                     }
@@ -61,6 +61,8 @@
             </div>
         </div>
     </nav>
+
+
     <div id="bienvenida" class="container">
         <h1>La tiendecilla de Jaime</h1>
         <h2>Bienvenid@ <?php echo $usuario ?></h2>
@@ -109,7 +111,9 @@
                         <img witdh="50" height="100" src="<?php echo $producto->imagen ?>">
                     </td>
                     <td>
-                        <form action="" method="POST"><input class="btn btn-primary" type="submit" value="Añadir" </form>
+                        <form action="" method="POST">
+                            <input type="hidden" value="<?php echo $producto->idProducto ?>"name="idProducto">
+                            <input class="btn btn-primary" type="submit" value="Añadir" </form>
                     </td>
                 <?php
                     echo "</tr>";
