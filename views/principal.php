@@ -28,20 +28,24 @@
     ?>
     <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark mb-3" data-bs-theme="dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img src="./Images/logofinal.PNG" width="150px"></a>
+            <a class="navbar-brand" href="./principal.php"><img src="./Images/logofinal.PNG" width="150px"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="losa" class="nav-link active" aria-current="page" href="./principal.php">Ver Stock</a>
+                        <a  class="nav-link active" aria-current="page" href="./principal.php">Ver Stock</a>
                     </li>
                     <?php
                     if ($_SESSION["rol"] == 'admin') {
                     ?>
                         <li class="nav-item">
+<<<<<<< HEAD
                             <a class="losa" class="nav-link active" aria-current="page" href="./productos.php">Productos</a>
+=======
+                            <a   class="nav-link active" aria-current="page" href="./productos.php">Añadir productos</a>
+>>>>>>> 86af586d32a516eb11fdcd264e3bb8612956211a
                         </li>
                     <?php
                     }
@@ -64,8 +68,8 @@
 
 
     <div id="bienvenida" class="container">
-        <h1>La tiendecilla de Jaime</h1>
-        <h2>Bienvenid@ <?php echo $usuario ?></h2>
+        <h1 class="text-white">La tiendecilla de Jaime</h1>
+        <h2 class="text-white">Bienvenid@ <?php echo $usuario ?></h2>
     </div>
     <div class="container">
         <table id="tabla" class="table table-striped table-hover">
@@ -111,9 +115,13 @@
                         <img witdh="50" height="100" src="<?php echo $producto->imagen ?>">
                     </td>
                     <td>
+<<<<<<< HEAD
                         <form action="" method="POST">
                             <input type="hidden" value="<?php echo $producto->idProducto ?>"name="idProducto">
                             <input class="btn btn-primary" type="submit" value="Añadir" </form>
+=======
+                        <form action="" method="POST"><input class="btn btn-primary" type="submit" value="Añadir"></form>
+>>>>>>> 86af586d32a516eb11fdcd264e3bb8612956211a
                     </td>
                 <?php
                     echo "</tr>";
@@ -123,5 +131,4 @@
         </table>
     </div>
 </body>
-
 </html>
