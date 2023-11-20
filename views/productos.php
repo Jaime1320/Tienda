@@ -5,13 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productos</title>
-    <link rel="stylesheet" href="./Styles/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <?php require '../Util/base_tienda.php' ?>
+    <link rel="stylesheet" href="./Styles/style.css">
 </head>
 
 <body>
     <?php
+    #Creamos la sesion segun que usuario este usando la pagina
     session_start();
     if (isset($_SESSION["usuario"]) && isset($_SESSION["rol"])) {
         $rol = $_SESSION["rol"];
@@ -21,6 +22,7 @@
     }
     if ($rol != "admin") {
     ?>
+        <!--Comprobamos que nadie que no sea administrador pueda acceder a esta pagina-->
         <div class="container">
             <div class="alert alert-danger mt-4" role="alert">No has iniciado sesion como administrador</div>
             <button type="button" class="btn btn-warning"><a class="nav-link active" href="iniciarsesion.php" tabindex="-1">Volver a inicio de sesión</a></button>
@@ -30,7 +32,7 @@
     ?>
         <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark" data-bs-theme="dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="./principal.php"><img src="./Images/logofinal.PNG" width="150px"></a>
+                <a class="navbar-brand mt-1" href="./principal.php"><img src="./Images/Jaimes_Retro.png" width="150px"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -39,11 +41,14 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="./principal.php">Ver Stock</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="./cesta.php">Ver el carrito</a>
+                        </li>
                         <?php
                         if ($_SESSION["rol"] == 'admin') {
                         ?>
                             <li class="nav-item">
-                                <a  class="nav-link active" aria-current="page" href="./productos.php">Añadir productos</a>
+                                <a class="nav-link active" aria-current="page" href="./productos.php">Añadir productos</a>
                             </li>
                         <?php
                         }
@@ -74,7 +79,6 @@
             $tamano_imagen = $_FILES["imagen"]["size"];
             $ruta_temporal = $_FILES["imagen"]["tmp_name"];
             //echo $nombre_imagen . " " . $tipo_imagen . " " . $tamano_imagen . " " . $ruta_temporal;
-
 
             #   Validación nombreProducto
             if (strlen($temp_nombreProducto) == 0) {
@@ -184,11 +188,12 @@
     }
 
     ?>
-
-
-
-
-
+    <footer class="bg-body-tertiary text-center text-lg-start">
+        <!-- Copyright -->
+        <div class="text-center p-3 mifooter mt-4" style="background-color: rgba(0, 0, 0, 0.05);">
+            Jaime's Retro © 2023
+        </div>
+        <!-- Copyright -->
+    </footer>
 </body>
-
 </html>

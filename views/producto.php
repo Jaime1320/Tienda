@@ -1,4 +1,5 @@
 <?php
+#Creamos la clase producto
     class Producto{
         public int $idProducto;
         public string $nombreProducto;

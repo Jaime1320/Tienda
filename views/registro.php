@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrarse</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../views/Styles/inicio.css">
+    <link rel="stylesheet" href="./Styles/inicio.css">
     <?php require "../Util/base_tienda.php" ?>
 </head>
 
@@ -19,7 +19,7 @@
 
         $contrasena_cifrada = password_hash($temp_contrasena, PASSWORD_DEFAULT);
 
-        #    Validacion usuario
+        #Validamos el usuario
         if (!strlen($temp_usuario) > 0) {
             $err_usuario = "El nombre de usuario es obligatorio";
         } else {
@@ -32,7 +32,7 @@
             }
         }
 
-        #   Validación contraseña
+        #Validamos la contraseña
         if (!strlen($temp_contrasena) > 0) {
             $err_contrasena = "La contraseña es obligatoria";
         } else {
@@ -45,7 +45,7 @@
             }
         }
 
-        #   Validación fecha de nacimiento
+        #Validamos la fecha de nacimiento
         if(strlen($temp_fecha_nacimiento) == 0) {
             $err_fecha_nacimiento = "La fecha de nacimiento es obligatoria";
         } else {
@@ -72,6 +72,7 @@
         }
     }
     ?>
+    <!--Creamos el formulario de inicio de sesion-->
     <div class="container">
         <h1>Registrarse</h1>
         <form action="" method="post">
@@ -90,12 +91,14 @@
             <?php if (isset ($err_fecha_nacimiento)) echo '<label class=text-danger>'.$err_fecha_nacimiento. '</label>' ?>
             <br>
             <br>
-            <input class="btn btn-warning" type="submit" value="Registrarse">
+            <input class="btn btn-success" type="submit" value="Registrarse">
             <div class="mt-4">
                 Ya tienes cuenta? <a href="./iniciarsesion.php">Iniciar Sesión</a>
             </div>
         </form>
+    
         <?php
+        #Insertamos el usuario en nuestra base de datos
          if(isset($usuario) && isset($contrasena_cifrada) && isset($fecha_nacimiento)) {
              $sql = "INSERT INTO usuarios (usuario,contrasena,fechaNacimiento) VALUES ('$usuario', '$contrasena_cifrada', '$fecha_nacimiento')";
              $sql2 = "INSERT INTO cestas (usuario,precioTotal) VALUES ('$usuario', 0)";

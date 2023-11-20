@@ -7,13 +7,14 @@
     <title>Iniciar sesion</title>
     <?php require "../Util/base_tienda.php" ?>
     <?php require './producto.php'; ?>
-    <link rel="stylesheet" href="./Styles/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./Styles/style.css">
 </head>
 
 <body>
     <?php
+    #Creamos la sesion segun que usuario este usando la pagina
     session_start();
     if (isset($_SESSION["usuario"])) {
         $usuario = $_SESSION["usuario"];
@@ -27,6 +28,7 @@
     }
     ?>
     <?php
+    #Preparamos el boton de añadir a la cesta para que segun la cantidad que se seleccione, se añada a la cesta ese numero de productos
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id_producto = $_POST["idProducto"];
         $cantidad_seleccionada = $_POST["cantidad"];
@@ -49,13 +51,18 @@
                     $sql = "update productoscestas set cantidad = (cantidad + '$cantidadCesta') where idProducto = '$id_producto'";
                     $conexion->query($sql);
                 }
+                $sql = "select precio from productos where idProducto = '$id_producto'";
+                $precio = $conexion->query($sql)->fetch_assoc()["precio"];
+                $sql = "update cestas set precioTotal = (precioTotal + '$precio' * '$cantidad_seleccionada') where idCesta = '$idCesta'";
+                $conexion->query($sql);
             }
         }
     }
     ?>
+    <!-- Creamos nuestro nav -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark mb-3" data-bs-theme="dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="./principal.php"><img src="./Images/logofinal.PNG" width="150px"></a>
+            <a class="navbar-brand mt-1" href="./principal.php"><img src="./Images/Jaimes_Retro.png" width="150px"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -64,27 +71,31 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="./principal.php">Ver Stock</a>
                     </li>
+                    <li>
+                        <a class="nav-link active" aria-current="page" href="./cesta.php">Ver el carrito</a>
+                    </li>
                     <?php
                     if ($_SESSION["rol"] == 'admin') {
                     ?>
                         <li class="nav-item">
-
-                            <a class="losa" class="nav-link active" aria-current="page" href="./productos.php">Productos</a>
-
                             <a class="nav-link active" aria-current="page" href="./productos.php">Añadir productos</a>
-
                         </li>
                     <?php
                     }
                     ?>
+                    <li>
+                        <a class="nav-link active">Bienvenid@ <?php echo $usuario ?></a>
+                    </li>
                 </ul>
                 <?php
+                #Si el usuario es invitado, le mostramos el boton de iniciar sesion
                 if ($usuario == "invitado") {
                 ?>
                     <a class="btn btn-secondary" href="iniciarsesion.php">Iniciar Sesion</a>
                 <?php
                 } else {
                 ?>
+                    <!-- Si el usuario es cliente o Admin, le mostramos el boton de cerrar sesion -->
                     <a class="btn btn-secondary" aria-current="page" href="cerrarsesion.php">Cerrar Sesión</a>
                 <?php
                 }
@@ -92,18 +103,11 @@
             </div>
         </div>
     </nav>
-
-
-    <div id="bienvenida" class="container">
-        <h1 class="text-white">La tiendecilla de Jaime</h1>
-        <h2 class="text-white">Bienvenid@ <?php echo $usuario ?></h2>
+    <!-- Creamos el contenedor de nuestro logo -->
+    <div class="container w-25 bienvenida">
+        <div><img src="./Images/Jaimes_Retro.png"></div>
     </div>
-    <?php
-    if (isset($mensajeCesta)) {
-        echo $mensajeCesta;
-    }
-
-    ?>
+    <!-- Creamos la tabla de los productos -->
     <div class="container">
         <table id="tabla" class="table table-striped table-hover">
             <thead class="table table-dark">
@@ -119,6 +123,7 @@
             </thead>
             <tbody>
                 <?php
+                #Utilizamos el objeto producto para mostrar los productos de la base de datos
                 $sql = "SELECT * FROM productos";
                 $resultado = $conexion->query($sql);
                 $productos = [];
@@ -135,11 +140,12 @@
                 }
                 ?>
                 <?php
+                #Insertamos los productos en la tabla
                 foreach ($productos as $producto) {
                     echo "<tr>";
                     echo "<td>" . $producto->idProducto . "</td>";
                     echo "<td>" . $producto->nombreProducto . "</td>";
-                    echo "<td>" . $producto->precio . "</td>";
+                    echo "<td>" . $producto->precio . "€</td>";
                     echo "<td>" . $producto->descripcion . "</td>";
                     echo "<td>" . $producto->cantidad . "</td>";
 
@@ -148,7 +154,7 @@
                         <img witdh="50" height="100" src="<?php echo $producto->imagen ?>">
                     </td>
                     <td>
-
+                        <!-- Creamos el formulario para añadir productos a la cesta -->
                         <form action="" method="post">
                             <?php if (($usuario != "invitado")) { ?>
                                 <input type="hidden" name="idProducto" value="<?php echo $producto->idProducto ?>">
@@ -187,6 +193,13 @@
             </tbody>
         </table>
     </div>
+    <footer class="bg-body-tertiary text-center text-lg-start">
+        <!-- Copyright -->
+        <div class="text-center p-3 mifooter mt-4" style="background-color: rgba(0, 0, 0, 0.05);">
+            Jaime's Retro © 2023
+        </div>
+        <!-- Copyright -->
+    </footer>
 </body>
 
 </html>

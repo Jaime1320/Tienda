@@ -12,6 +12,7 @@
 
 <body>
     <?php
+    #Buscamos en la base de datos si existe el usuario
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $usuario = $_POST["usuario"];
         $contrasena = $_POST["contrasena"];
@@ -25,13 +26,14 @@
                 No existe el Usuario
             </div>
     <?php
+    #Si existe el usuario, comprobamos que la contraseña sea correcta
         } else {
             while ($fila = $resultado->fetch_assoc()) {
                 $contrasena_cifrada = $fila["contrasena"];
                 $rol = $fila["rol"];
             }
-
             $acceso_valido = password_verify($contrasena, $contrasena_cifrada);
+            #Si la contraseña es correcta, iniciamos sesion
             if ($acceso_valido) {
                 echo "Bienvenido $usuario";
                 session_start();
@@ -44,6 +46,7 @@
         }
     }
     ?>
+    <!-- Cremao el formulario de inicio de sesion-->
     <div class="container">
         <h1>Iniciar sesión</h1>
         <form action="" method="post">
@@ -55,7 +58,7 @@
                 <label class="formu" class="form-label">Contraseña</label>
                 <input class="form-control" type="password" name="contrasena">
             </div>
-            <input  class="btn btn-warning" type="submit" value="Iniciar sesion">
+            <input class="btn btn-success" type="submit" value="Iniciar sesion">
             <div class="mt-4">
                 No tienes cuenta? <a href="./registro.php">Registrate</a>
             </div>

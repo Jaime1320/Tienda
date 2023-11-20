@@ -4,13 +4,13 @@
     padding: 6%;
     font-weight: 900;
     border-radius: 20px;
-    color: gold;
-    box-shadow: 0px 0px 50px gold;
+    color: lightgreen;
+    box-shadow: 0px 0px 50px lightgreen;
     width: 50%;
 }
 
 body {
-    background-image: url(../Images/fondito.jpg);
+    background-image: url(../Images/fondopagina.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;
