@@ -26,6 +26,33 @@
         $rol = $_SESSION["rol"];
     }
     ?>
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $id_producto = $_POST["idProducto"];
+        $cantidad_seleccionada = $_POST["cantidad"];
+        if ($cantidad_seleccionada != "") {
+            $sql = "select cantidad from productos where idProducto = '$id_producto'";
+            $cantidadProducto = $conexion->query($sql)->fetch_assoc()["cantidad"];
+            if ($cantidadProducto != "0") {
+                $sql = "select idCesta from cestas where usuario = '$usuario'";
+                $idCesta = $conexion->query($sql)->fetch_assoc()["idCesta"];
+                // restar
+                $sql = "update productos set cantidad = (cantidad - '$cantidad_seleccionada') where idProducto = '$id_producto'";
+                $conexion->query($sql);
+                $yaEsta = "select * from productoscestas where idProducto = '$id_producto'";
+                if ($conexion->query($yaEsta)->num_rows == 0) {
+                    $sql = "insert into productoscestas values ('$id_producto', '$idCesta', '$cantidad_seleccionada')";
+                    $conexion->query($sql);
+                } else {
+                    $sql = "select cantidad from productoscestas where idProducto = '$id_producto'";
+                    $cantidadCesta = $conexion->query($sql)->fetch_assoc()["cantidad"];
+                    $sql = "update productoscestas set cantidad = (cantidad + '$cantidadCesta') where idProducto = '$id_producto'";
+                    $conexion->query($sql);
+                }
+            }
+        }
+    }
+    ?>
     <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark mb-3" data-bs-theme="dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="./principal.php"><img src="./Images/logofinal.PNG" width="150px"></a>
@@ -35,17 +62,17 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a  class="nav-link active" aria-current="page" href="./principal.php">Ver Stock</a>
+                        <a class="nav-link active" aria-current="page" href="./principal.php">Ver Stock</a>
                     </li>
                     <?php
                     if ($_SESSION["rol"] == 'admin') {
                     ?>
                         <li class="nav-item">
-<<<<<<< HEAD
+
                             <a class="losa" class="nav-link active" aria-current="page" href="./productos.php">Productos</a>
-=======
-                            <a   class="nav-link active" aria-current="page" href="./productos.php">Añadir productos</a>
->>>>>>> 86af586d32a516eb11fdcd264e3bb8612956211a
+
+                            <a class="nav-link active" aria-current="page" href="./productos.php">Añadir productos</a>
+
                         </li>
                     <?php
                     }
@@ -71,6 +98,12 @@
         <h1 class="text-white">La tiendecilla de Jaime</h1>
         <h2 class="text-white">Bienvenid@ <?php echo $usuario ?></h2>
     </div>
+    <?php
+    if (isset($mensajeCesta)) {
+        echo $mensajeCesta;
+    }
+
+    ?>
     <div class="container">
         <table id="tabla" class="table table-striped table-hover">
             <thead class="table table-dark">
@@ -115,13 +148,37 @@
                         <img witdh="50" height="100" src="<?php echo $producto->imagen ?>">
                     </td>
                     <td>
-<<<<<<< HEAD
-                        <form action="" method="POST">
-                            <input type="hidden" value="<?php echo $producto->idProducto ?>"name="idProducto">
-                            <input class="btn btn-primary" type="submit" value="Añadir" </form>
-=======
-                        <form action="" method="POST"><input class="btn btn-primary" type="submit" value="Añadir"></form>
->>>>>>> 86af586d32a516eb11fdcd264e3bb8612956211a
+
+                        <form action="" method="post">
+                            <?php if (($usuario != "invitado")) { ?>
+                                <input type="hidden" name="idProducto" value="<?php echo $producto->idProducto ?>">
+                                <label for="cantidad">Cantidad:</label>
+                                <select name="cantidad">
+                                    <?php
+                                    $sql = "SELECT cantidad FROM productos where idProducto = '$producto->idProducto'";
+                                    $cantidadActual = $conexion->query($sql)->fetch_assoc()["cantidad"];
+                                    $maxCantidad = min(5, $cantidadActual);
+                                    for ($i = 1; $i <= $maxCantidad; $i++) {
+                                    ?>
+                                        <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                                <?php
+                                if ($cantidadActual > 0) {
+                                ?>
+                                    <input class="btn btn-warning" type="submit" value="Añadir">
+                                <?php
+                                } else {
+                                ?>
+                                    <input class="btn btn-warning" type="submit" value="Añadir" disabled>
+                                <?php
+                                }
+                            } else { ?>
+                                <input class="btn btn-warning" type="submit" value="Añadir" disabled>
+                            <?php } ?>
+                        </form>
                     </td>
                 <?php
                     echo "</tr>";
@@ -131,4 +188,5 @@
         </table>
     </div>
 </body>
+
 </html>
