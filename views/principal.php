@@ -41,19 +41,17 @@
                 // restar
                 $sql = "update productos set cantidad = (cantidad - '$cantidad_seleccionada') where idProducto = '$id_producto'";
                 $conexion->query($sql);
-                $yaEsta = "select * from productoscestas where idProducto = '$id_producto'";
-                if ($conexion->query($yaEsta)->num_rows == 0) {
+                $sql = "select * from productoscestas where idProducto = '$id_producto' and idCesta = '$idCesta'";
+                if ($conexion->query($sql)->num_rows == 0) {
                     $sql = "insert into productoscestas values ('$id_producto', '$idCesta', '$cantidad_seleccionada')";
                     $conexion->query($sql);
                 } else {
-                    $sql = "select cantidad from productoscestas where idProducto = '$id_producto'";
-                    $cantidadCesta = $conexion->query($sql)->fetch_assoc()["cantidad"];
-                    $sql = "update productoscestas set cantidad = (cantidad + '$cantidadCesta') where idProducto = '$id_producto'";
+                    $sql = "update productoscestas set cantidad = (cantidad + '$cantidad_seleccionada') where idProducto = '$id_producto' and idCesta = '$idCesta'";
                     $conexion->query($sql);
                 }
                 $sql = "select precio from productos where idProducto = '$id_producto'";
                 $precio = $conexion->query($sql)->fetch_assoc()["precio"];
-                $sql = "update cestas set precioTotal = (precioTotal + '$precio' * '$cantidad_seleccionada') where idCesta = '$idCesta'";
+                $sql = "update cestas set precioTotal = (precioTotal + ('$precio' * '$cantidad_seleccionada')) where idCesta = '$idCesta'";
                 $conexion->query($sql);
             }
         }
@@ -151,7 +149,7 @@
 
                 ?>
                     <td>
-                        <img witdh="50" height="100" src="<?php echo $producto->imagen ?>">
+                        <img class="fotoTabla" witdh="50" height="100" src="<?php echo $producto->imagen ?>">
                     </td>
                     <td>
                         <!-- Creamos el formulario para añadir productos a la cesta -->

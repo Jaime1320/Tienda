@@ -1,92 +1,105 @@
-html{
-    min-height: 100%;
-    position: relative;
+html {
+  min-height: 100%;
+  position: relative;
 }
-td, th {
-    text-align: center;
+td,
+th {
+  text-align: center;
 }
 table {
-    box-shadow: 0px 0px 10px lightgreen;
-
+  box-shadow: 0px 0px 10px lightgreen;
 }
-#tabla th, #tabla td {
-    border: 5px solid lightgreen;
+#tabla th,
+#tabla td {
+  border: 5px solid lightgreen;
 }
 td {
-    vertical-align: middle;
+  vertical-align: middle;
 }
-nav img{
-    border-radius: 20px;
+nav img {
+  border-radius: 20px;
 }
-nav div{
-    font-size: 25px;
+nav div {
+  font-size: 25px;
 }
-nav a{
-    border-radius: 15px;
+nav a {
+  border-radius: 15px;
 }
-nav a:hover{
-    transition: 1s;
-    color: black !important;
-    box-shadow: 0px 0px 10px lightgreen;
-    background-color: rgba(144, 238, 144, 0.747);
+nav a:hover {
+  transition: 1s;
+  color: black !important;
+  box-shadow: 0px 0px 10px lightgreen;
+  background-color: rgba(144, 238, 144, 0.747);
 }
-nav ul > li{
-    margin-right: 20px;
+nav ul > li {
+  margin-right: 20px;
 }
-
 
 body {
-    background-image: url(../Images/fondopagina.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin-bottom: 100px;
+  background-image: url(../Images/fondopagina.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-bottom: 100px;
 }
 
-.bienvenida{
-    background-color: rgba(144, 238, 144, 0.651);
-    margin-bottom: 20px;
-    border-radius: 20px;
-    box-shadow: 0px 0px 10px rgb(144, 238, 144);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border: 10px solid lightgreen;
+.bienvenida {
+  background-color: rgba(144, 238, 144, 0.651);
+  margin-bottom: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgb(144, 238, 144);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 10px solid lightgreen;
+  transition: 0.5s ease all;
 }
-.bienvenida1{
-    background-color: rgba(15, 58, 15, 0.445);
-    box-shadow: 0px 0px 10px rgb(144, 238, 144);
-    border-radius: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+.bienvenida1 {
+  background-color: rgba(15, 58, 15, 0.445);
+  box-shadow: 0px 0px 10px rgb(144, 238, 144);
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
-.bienvenida:hover{
-    transition: 2s;
-    transform: matrix(1.1, 0, 0, 1.1, 0, 0);
+.bienvenida:hover {
+  transform: matrix(1.1, 0, 0, 1.1, 0, 0);
 }
 
 ul + a {
-    margin-right: 50px;
+  margin-right: 50px;
 }
-.formulario{
-    color: lightgreen;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 25px;
+.formulario {
+  color: lightgreen;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 25px;
 }
-.insertar{
-    margin-top: 50px;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 50px;
-    color: lightgreen;
+.insertar {
+  margin-top: 50px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 50px;
+  color: lightgreen;
 }
-.btn.btn-warning{
-    font-size: 20px;
+.btn.btn-warning {
+  font-size: 20px;
 }
-.mifooter{
-    background-color: lightgreen !important;
-    position: absolute;
-    bottom: 0px;
-    width: 100%;
+.mifooter {
+  background-color: lightgreen !important;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+}
+
+.fotoTabla:hover {
+  transition: 0.5s;
+  transform: matrix(2.5, 0, 0, 2.5, 0, 0);
+}
+
+.cajaformu {
+  background-color: rgba(0, 60, 100, 0.486);
+  padding-bottom: 1%;
+  margin-top: 25px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px rgb(0, 0, 105);
 }
