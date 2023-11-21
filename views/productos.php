@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,10 +9,9 @@
     <?php require '../Util/base_tienda.php' ?>
     <link rel="stylesheet" href="./Styles/style.css">
 </head>
-
 <body>
     <?php
-    #Creamos la sesion segun que usuario este usando la pagina
+    # Creamos la sesión según el usuario que esté usando la página
     session_start();
     if (isset($_SESSION["usuario"]) && isset($_SESSION["rol"])) {
         $rol = $_SESSION["rol"];
@@ -23,14 +21,15 @@
     }
     if ($rol != "admin") {
     ?>
-        <!--Comprobamos que nadie que no sea administrador pueda acceder a esta pagina-->
+        <!-- Comprobamos que nadie que no sea administrador pueda acceder a esta página -->
         <div class="container">
-            <div class="alert alert-danger mt-4" role="alert">No has iniciado sesion como administrador</div>
+            <div class="alert alert-danger mt-4" role="alert">No has iniciado sesión como administrador</div>
             <button type="button" class="btn btn-warning"><a class="nav-link active" href="iniciarsesion.php" tabindex="-1">Volver a inicio de sesión</a></button>
         </div>
     <?php
     } else {
     ?>
+        <!-- Creamos la barra de navegación para el admin -->
         <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark" data-bs-theme="dark">
             <div class="container-fluid">
                 <a class="navbar-brand mt-1" href="./principal.php"><img src="./Images/Jaimes_Retro.png" width="150px"></a>
@@ -48,41 +47,38 @@
                         <?php
                         if ($_SESSION["rol"] == 'admin') {
                         ?>
+                            <!-- Opción de añadir productos visible solo para el admin -->
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="./productos.php">Añadir productos</a>
                             </li>
-                            
                         <?php
                         }
                         ?>
                     </ul>
+                    <!-- Creamos el botón para cerrar sesión -->
                     <a class="btn btn-secondary" aria-current="page" href="cerrarsesion.php">Cerrar Sesión</a>
                 </div>
             </div>
         </nav>
         <?php
-
         function depurar($entrada)
         {
             $salida = htmlspecialchars($entrada);
             $salida = trim($salida);
             return $salida;
         }
-
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $temp_nombreProducto = depurar($_POST["nombreProducto"]);
             $temp_precio = depurar($_POST["precio"]);
             $temp_descripcion = depurar($_POST["descripcion"]);
             $temp_cantidad = depurar($_POST["cantidad"]);
-
-            //$_FILES["nombreCampo"]["queQueremosCoger"] -> TYPE, NAME, SIZE, TMP_NAME
+    
             $nombre_imagen = $_FILES["imagen"]["name"];
             $tipo_imagen = $_FILES["imagen"]["type"];
             $tamano_imagen = $_FILES["imagen"]["size"];
             $ruta_temporal = $_FILES["imagen"]["tmp_name"];
-            //echo $nombre_imagen . " " . $tipo_imagen . " " . $tamano_imagen . " " . $ruta_temporal;
 
-            #   Validación nombreProducto
+            #   Validación  del nombreProducto
             if (strlen($temp_nombreProducto) == 0) {
                 $err_nombreProducto = "El nombre es obligatorio";
             } else {
@@ -94,8 +90,7 @@
                 }
             }
 
-            #   Validación precio
-
+            #   Validación del precio
             if (strlen($temp_precio) == 0) {
                 $err_precio = "El precio es obligatorio";
             } elseif (!is_numeric($temp_precio)) {
@@ -108,30 +103,32 @@
                 $precio = $temp_precio;
             }
 
-            #  Validación descripcion
+            #  Validación de la descripcion
             if (strlen($temp_descripcion) == 0) {
-                $err_descripcion = "La descripcion es obligatoria";
+                $err_descripcion = "La descripción es obligatoria";
             } else {
                 if (strlen($temp_descripcion) > 255) {
-                    $err_descripcion = "La descripcion no puede tener mas de 255 caracteres";
+                    $err_descripcion = "La descripción no puede tener más de 255 caracteres";
                 } else {
                     $descripcion = $temp_descripcion;
                 }
             }
-            #  Validación cantidad
+
+            #  Validación de la cantidad
             if (strlen($temp_cantidad) == 0) {
                 $err_cantidad = "La cantidad es obligatoria";
             } else {
                 $patron = "/^[0-9]{1,10}$/";
                 if (!preg_match($patron, $temp_cantidad)) {
-                    $err_cantidad = "La cantidad no puede ser un numero decimal";
+                    $err_cantidad = "La cantidad no puede ser un número decimal";
                 } else {
                     $cantidad = $temp_cantidad;
                 }
             }
-            #   Validación imagen
-            if ($tamano_imagen > 10000000) {
-                $err_imagen = "La imagen no puede pesar mas de 1MB";
+
+            #   Validación de la imagen (Parte extra del ejercicio)
+            if ($tamano_imagen > 1000000) {
+                $err_imagen = "La imagen no puede pesar más de 1MB";
             } else {
                 if ($tipo_imagen != "image/jpeg") {
                     $err_imagen = "Tiene que ser formato imagen";
@@ -141,8 +138,8 @@
                 }
             }
         }
-
         ?>
+        <!-- Formulario para añadir productos con sus errores controlados-->
         <div class="container cajaformu">
             <h1 class="insertar">Insertar producto</h1>
             <div>
@@ -176,7 +173,8 @@
                 </form>
             </div>
         </div>
-    <?php
+        <?php
+        #   Insertamos el producto en la base de datos si las validaciones son correctas
         if (isset($nombreProducto) && isset($precio) && isset($descripcion) && isset($cantidad) && isset($ruta_final)) {
             $sql = "INSERT INTO productos (nombreProducto, precio, descripcion, cantidad , imagen)
         VALUES ('$nombreProducto',
@@ -188,14 +186,11 @@
             echo "<div class='container text-white'><h3>Producto insertado con éxito</h3></div>";
         }
     }
-
     ?>
-    <footer class="bg-body-tertiary text-center text-lg-start">
-        <!-- Copyright -->
+    <footer class="bg-body-tertiary text-center text-lg-start"> 
         <div class="text-center p-3 mifooter mt-4" style="background-color: rgba(0, 0, 0, 0.05);">
             Jaime's Retro © 2023
         </div>
-        <!-- Copyright -->
     </footer>
 </body>
 </html>

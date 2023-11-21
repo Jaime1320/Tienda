@@ -1,26 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar sesion</title>
+    <title>Iniciar sesión</title>
     <?php require "../Util/base_tienda.php" ?>
     <?php require './producto.php'; ?>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./Styles/style.css">
 </head>
-
 <body>
     <?php
-    #Creamos la sesion segun que usuario este usando la pagina
+    # Creamos la sesión según el usuario que esté usando la página
     session_start();
     if (isset($_SESSION["usuario"])) {
         $usuario = $_SESSION["usuario"];
         $rol = $_SESSION["rol"];
     } else {
-        //header("Location: iniciarsesion.php");
         $_SESSION["usuario"] = "invitado";
         $usuario = $_SESSION["usuario"];
         $_SESSION["rol"] = "cliente";
@@ -28,7 +25,7 @@
     }
     ?>
     <?php
-    #Preparamos el boton de añadir a la cesta para que segun la cantidad que se seleccione, se añada a la cesta ese numero de productos
+    # Preparamos el botón de añadir a la cesta para que según la cantidad que se seleccione, se añada a la cesta ese número de productos
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id_producto = $_POST["idProducto"];
         $cantidad_seleccionada = $_POST["cantidad"];
@@ -86,14 +83,14 @@
                     </li>
                 </ul>
                 <?php
-                #Si el usuario es invitado, le mostramos el boton de iniciar sesion
+                # Si el usuario es invitado, le mostramos el botón de iniciar sesión
                 if ($usuario == "invitado") {
                 ?>
                     <a class="btn btn-secondary" href="iniciarsesion.php">Iniciar Sesion</a>
                 <?php
                 } else {
                 ?>
-                    <!-- Si el usuario es cliente o Admin, le mostramos el boton de cerrar sesion -->
+                    <!-- Si el usuario es cliente o Admin, le mostramos el botón de cerrar sesión -->
                     <a class="btn btn-secondary" aria-current="page" href="cerrarsesion.php">Cerrar Sesión</a>
                 <?php
                 }
@@ -101,14 +98,14 @@
             </div>
         </div>
     </nav>
-    <!-- Creamos el contenedor de nuestro logo -->
+    <!-- Creamos el contenedor con nuestro logo -->
     <div class="container w-25 bienvenida">
         <div><img src="./Images/Jaimes_Retro.png"></div>
     </div>
     <!-- Creamos la tabla de los productos -->
     <div class="container">
-        <table id="tabla" class="table table-striped table-hover">
-            <thead class="table table-dark">
+        <table id="tabla" class="table table-dark table-striped table-hover">
+            <thead class="table table-light">
                 <tr>
                     <th>ID Producto</th>
                     <th>Nombre</th>
@@ -121,7 +118,7 @@
             </thead>
             <tbody>
                 <?php
-                #Utilizamos el objeto producto para mostrar los productos de la base de datos
+                # Utilizamos el objeto producto para mostrar los productos de la base de datos
                 $sql = "SELECT * FROM productos";
                 $resultado = $conexion->query($sql);
                 $productos = [];
@@ -138,7 +135,7 @@
                 }
                 ?>
                 <?php
-                #Insertamos los productos en la tabla
+                # Insertamos los productos en la tabla
                 foreach ($productos as $producto) {
                     echo "<tr>";
                     echo "<td>" . $producto->idProducto . "</td>";
@@ -146,7 +143,6 @@
                     echo "<td>" . $producto->precio . "€</td>";
                     echo "<td>" . $producto->descripcion . "</td>";
                     echo "<td>" . $producto->cantidad . "</td>";
-
                 ?>
                     <td>
                         <img class="fotoTabla" witdh="50" height="100" src="<?php echo $producto->imagen ?>">
@@ -192,12 +188,9 @@
         </table>
     </div>
     <footer class="bg-body-tertiary text-center text-lg-start">
-        <!-- Copyright -->
         <div class="text-center p-3 mifooter mt-4" style="background-color: rgba(0, 0, 0, 0.05);">
             Jaime's Retro © 2023
         </div>
-        <!-- Copyright -->
     </footer>
 </body>
-
 </html>
