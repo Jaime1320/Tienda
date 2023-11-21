@@ -7,11 +7,12 @@ th {
   text-align: center;
 }
 table {
-  box-shadow: 0px 0px 10px lightgreen;
+  box-shadow: 0px 0px 50px rgb(179, 58, 58);
+  border: 3px solid rgb(179, 58, 58) !important;
+
 }
-#tabla th,
-#tabla td {
-  border: 5px solid lightgreen;
+#tabla th,#tabla td {
+  border: 1px solid rgb(179, 58, 58);
 }
 td {
   vertical-align: middle;
@@ -51,7 +52,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  border: 10px solid lightgreen;
+  border: 7px solid lightgreen;
   transition: 0.5s ease all;
 }
 .bienvenida1 {
@@ -85,10 +86,12 @@ ul + a {
   font-size: 20px;
 }
 .mifooter {
-  background-color: lightgreen !important;
+  background-color: rgb(6, 75, 6) !important;
   position: absolute;
+  color: white;
   bottom: 0px;
   width: 100%;
+  border-top: 2px solid black;
 }
 
 .fotoTabla:hover {
